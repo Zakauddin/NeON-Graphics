@@ -92,6 +92,16 @@ void Course::newAttend() {
 	}
 }
 
+void Course::newAttendGraphic(RenderWindow& window, Font& font) {
+	for (int i = 0; i < numOfStudents; i++) {
+		char* tempGrade = studentList[i]->getGrade();
+		if (tempGrade[0] != 'W') {
+			studentList[i]->newAttendGraphic(window, font);
+		}
+		tempGrade = nullptr;
+	}
+}
+
 void Course::appendAttend() {
 	char studentID[7];
 	cout << "Please enter the student's ID: ";
@@ -154,6 +164,69 @@ void Course::printAttendance() {
 			}
 			temp = nullptr;
 		}
+	}
+}
+
+void Course::viewAttendGraphic(RenderWindow& window, Font& font) {
+	if (numOfStudents == 0) {
+		cout << "No students registered to this course yet!" << endl;
+	}
+	else {
+		Texture backgroundImg;
+		backgroundImg.loadFromFile("background.png");
+		Sprite background(backgroundImg);
+		background.scale((float)0.69, (float)0.69);
+		background.setPosition(0, 0);
+
+		window.clear();
+
+		window.draw(background);
+
+		for (int i = 0; i < numOfStudents; i++) {
+			
+
+			Text uniName;
+			uniName.setFont(font);
+			uniName.setString(studentList[i]->getStudentID());
+			uniName.setCharacterSize(50);
+			uniName.setFillColor(Color::Black);
+			uniName.setStyle(Text::Bold);
+			FloatRect textRect = uniName.getLocalBounds();
+			uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+			uniName.setPosition(250, 100 + (i * 75));
+			window.draw(uniName);
+
+			int* temp = studentList[i]->getAttend();
+			for (int j = 0; j < studentList[i]->getNumOfAttend(); j++) {
+				if (temp[j] == 0) {
+					Text uniName;
+					uniName.setFont(font);
+					uniName.setString("A");
+					uniName.setCharacterSize(50);
+					uniName.setFillColor(Color::Black);
+					uniName.setStyle(Text::Bold);
+					FloatRect textRect = uniName.getLocalBounds();
+					uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					uniName.setPosition(400 + (50 * j), 100 + (i * 75));
+					window.draw(uniName);
+
+				}
+				else {
+					Text uniName;
+					uniName.setFont(font);
+					uniName.setString("P");
+					uniName.setCharacterSize(50);
+					uniName.setFillColor(Color::Black);
+					uniName.setStyle(Text::Bold);
+					FloatRect textRect = uniName.getLocalBounds();
+					uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					uniName.setPosition(400 + (50 * j), 100 + (i * 75));
+					window.draw(uniName);
+				}
+			}
+			temp = nullptr;
+		}
+		window.display();
 	}
 }
 

@@ -27,8 +27,10 @@ public:
 	void appointTA(TA* obj);
 	void print();
 	void newAttend();
+	void newAttendGraphic(RenderWindow& window, Font& font);
 	void appendAttend();
 	void printAttendance();
+	void viewAttendGraphic(RenderWindow& window, Font& font);
 	void newMarks();
 	void appendMarks();
 	void printMarks();

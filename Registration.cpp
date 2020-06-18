@@ -1,7 +1,10 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include <fstream>
+#include <windows.h>
 #include "Registration.h"
 using namespace std;
+using namespace sf;
 
 int reader(char tempData[][50], char* studentID, char* courseID) {
 	ifstream rFile;
@@ -162,6 +165,106 @@ void Registration::newAttend() {
 	newFile << numOfAttend << endl;
 	for (int i = 0; i < numOfAttend; i++) {
 		newFile << attendance [i] << ',';
+	}
+	newFile << endl;
+	newFile << numOfMarks << endl;
+	for (int i = 0; i < numOfMarks; i++) {
+		newFile << marks[i] << ',';
+	}
+	newFile << endl;
+	newFile << grade << endl;
+	newFile.close();
+}
+
+void Registration::newAttendGraphic(RenderWindow& window, Font& font) {
+	char tempData[33][50];
+	int count = reader(tempData, studentID, courseID);
+	cout << "Please press 1 for present or press 0 for absent: " << endl;
+	bool done = false;
+	int attend;
+	while (done == false) {
+		Texture backgroundImg;
+		backgroundImg.loadFromFile("background.png");
+		Sprite background(backgroundImg);
+		background.scale((float)0.69, (float)0.69);
+		background.setPosition(0, 0);
+
+		window.clear();
+		window.draw(background);
+
+		Text uniName;
+		uniName.setFont(font);
+		uniName.setString(studentID);
+		uniName.setCharacterSize(200);
+		uniName.setFillColor(Color::Black);
+		uniName.setStyle(Text::Bold);
+		FloatRect textRect = uniName.getLocalBounds();
+		uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+		uniName.setPosition(640, 250);
+		window.draw(uniName);
+
+		Text present;
+		present.setFont(font);
+		present.setString("Present");
+		present.setCharacterSize(50);
+		present.setFillColor(Color::Black);
+		present.setStyle(Text::Bold);
+		textRect = present.getLocalBounds();
+		present.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+		present.setPosition(320, 550);
+		window.draw(present);
+
+		Text absent;
+		absent.setFont(font);
+		absent.setString("Absent");
+		absent.setCharacterSize(50);
+		absent.setFillColor(Color::Black);
+		absent.setStyle(Text::Bold);
+		textRect = absent.getLocalBounds();
+		absent.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+		absent.setPosition(960, 550);
+		window.draw(absent);
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			auto mouse_pos = sf::Mouse::getPosition(window);
+			auto translated_pos = window.mapPixelToCoords(mouse_pos);
+			Sleep(500);
+			if (present.getGlobalBounds().contains(translated_pos)) {
+				attend = 1;
+				done = true;
+			}
+			if (absent.getGlobalBounds().contains(translated_pos)) {
+				attend = 0;
+				done = true;
+			}
+		}
+		Sleep(5000);
+		window.display();
+	}
+	numOfAttend++;
+	int* temp = new int[numOfAttend];
+	for (int i = 0; i < numOfAttend - 1; i++) {
+		temp[i] = attendance[i];
+	}
+	temp[numOfAttend - 1] = attend;
+	if (attendance != nullptr) {
+		delete[]attendance;
+	}
+	attendance = temp;
+	temp = nullptr;
+
+	char file[] = "      .txt";
+	for (int i = 0; i < 6; i++) {
+		file[i] = studentID[i];
+	}
+	ofstream newFile(file);
+	for (int i = 0; i < count; i++) {
+		newFile << tempData[i] << endl;
+	}
+	newFile << courseID << endl;
+	newFile << numOfAttend << endl;
+	for (int i = 0; i < numOfAttend; i++) {
+		newFile << attendance[i] << ',';
 	}
 	newFile << endl;
 	newFile << numOfMarks << endl;

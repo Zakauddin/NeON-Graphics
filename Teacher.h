@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include "Person.h"
 #include "Employee.h"
 #include "Course.h"
@@ -26,7 +27,9 @@ public:
 	void passwordReset();
 	void newPassword(char* tempPass);
 	void viewAttend(char* courseID);
+	void viewAttendGraphic(RenderWindow& window, Font& font, char* courseID);
 	void newAttend(char* courseID);
+	void newAttendGraphic(RenderWindow& window, Font& font, char* courseID);
 	void appendAttend(char* courseID);
 	void newMarks(char* courseID);
 	void appendMarks(char* courseID);

@@ -13,6 +13,71 @@
 using namespace std;
 using namespace sf;
 
+void printText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT, char* text) {
+	Text  closeProgram;
+	closeProgram.setFont(font);
+	closeProgram.setString(text);
+	closeProgram.setCharacterSize(100);
+	closeProgram.setFillColor(Color::Black);
+	closeProgram.setStyle(Text::Bold);
+	FloatRect textRect = closeProgram.getLocalBounds();
+	closeProgram.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	closeProgram.setPosition(Vector2f(SCRWIDTH / 2.0f, SCRHEIGHT / 2.0f));
+	window.draw(closeProgram);
+}
+
+void invalidPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text invalid;
+	invalid.setFont(font);
+	invalid.setString("INVALID INPUT!");
+	invalid.setCharacterSize(50);
+	invalid.setFillColor(Color::Red);
+	invalid.setStyle(Text::Bold);
+	FloatRect textRect = invalid.getLocalBounds();
+	invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
+	window.draw(invalid);
+}
+
+void teacherPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text teacherText;
+	teacherText.setFont(font);
+	teacherText.setString("Teacher ID");
+	teacherText.setCharacterSize(80);
+	teacherText.setFillColor(Color::Black);
+	teacherText.setStyle(Text::Bold);
+	FloatRect textRect = teacherText.getLocalBounds();
+	teacherText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	teacherText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(teacherText);
+}
+
+void studentPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text studentText;
+	studentText.setFont(font);
+	studentText.setString("Student ID");
+	studentText.setCharacterSize(80);
+	studentText.setFillColor(Color::Black);
+	studentText.setStyle(Text::Bold);
+	FloatRect textRect = studentText.getLocalBounds();
+	studentText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	studentText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(studentText);
+}
+
+void coursePrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text courseText;
+	courseText.setFont(font);
+	courseText.setString("Course ID");
+	courseText.setCharacterSize(80);
+	courseText.setFillColor(Color::Black);
+	courseText.setStyle(Text::Bold);
+	FloatRect textRect = courseText.getLocalBounds();
+	courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(courseText);
+}
+
 int Person::numOfPeople = 0;
 
 template<class type>
@@ -272,6 +337,7 @@ int main()
 	bool task4B = false;
 	bool task5B = false;
 	bool task6B = false;
+	bool attendOption = false;
 
 	bool validCourse = false;
 	bool validTeacherID = false;
@@ -287,7 +353,7 @@ int main()
 	char teachID[7];
 	char studentID[7];
 
-	Teacher* teacherUser;
+	Teacher* teacherUser = nullptr;
 
 	uni.print();
 
@@ -378,31 +444,9 @@ int main()
 					}
 				}
 				catch (...) {
-					Text invalid;
-					invalid.setFont(font);
-					invalid.setString("INVALID INPUT!");
-					invalid.setCharacterSize(50);
-					invalid.setFillColor(Color::Red);
-					invalid.setStyle(Text::Bold);
-
-					FloatRect textRect = invalid.getLocalBounds();
-					invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-					window.draw(invalid);
-
+					invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 				}
-
-				Text username;
-				username.setFont(font);
-				username.setString(input);
-				username.setCharacterSize(80);
-				username.setFillColor(Color::Black);
-				username.setStyle(Text::Bold);
-
-				FloatRect textRect = username.getLocalBounds();
-				username.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-				username.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-				window.draw(username);
+				printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 			}
 		}
 		if (passwordScreen == true) {
@@ -481,23 +525,11 @@ int main()
 					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
 					window.draw(invalid);
 				}
-
-				Text password;
-				password.setFont(font);
-				password.setString(input);
-				password.setCharacterSize(80);
-				password.setFillColor(Color::Black);
-				password.setStyle(Text::Bold);
-
-				FloatRect textRect = password.getLocalBounds();
-				password.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-				password.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-				window.draw(password);
+				printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 			}			
 		}
 
 		if (isHOD == true) {
-
 			if (taskSelector == true) {
 				Text task1;
 				task1.setFont(font);
@@ -592,18 +624,7 @@ int main()
 			}
 			if (task1B == true) {
 				if (validCourse == true) {
-					Text courseText;
-					courseText.setFont(font);
-					courseText.setString("Course ID");
-					courseText.setCharacterSize(80);
-					courseText.setFillColor(Color::Black);
-					courseText.setStyle(Text::Bold);
-
-					textRect = courseText.getLocalBounds();
-					courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(courseText);
-
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -654,44 +675,13 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-					Text courseIDText;
-					courseIDText.setFont(font);
-					courseIDText.setString(input);
-					courseIDText.setCharacterSize(80);
-					courseIDText.setFillColor(Color::Black);
-					courseIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = courseIDText.getLocalBounds();
-					courseIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(courseIDText);
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 
 				}
 				if (validTeacherID == true) {
-					Text teacherText;
-					teacherText.setFont(font);
-					teacherText.setString("Teacher ID");
-					teacherText.setCharacterSize(80);
-					teacherText.setFillColor(Color::Black);
-					teacherText.setStyle(Text::Bold);
-
-					textRect = teacherText.getLocalBounds();
-					teacherText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					teacherText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(teacherText);
-
+					teacherPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -736,45 +726,14 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-					Text teacherIDText;
-					teacherIDText.setFont(font);
-					teacherIDText.setString(input);
-					teacherIDText.setCharacterSize(80);
-					teacherIDText.setFillColor(Color::Black);
-					teacherIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = teacherIDText.getLocalBounds();
-					teacherIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					teacherIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(teacherIDText);
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 			}
 			if (task2B == true) {
 				if (validStudentID == true) {
-					Text studentText;
-					studentText.setFont(font);
-					studentText.setString("Student ID");
-					studentText.setCharacterSize(80);
-					studentText.setFillColor(Color::Black);
-					studentText.setStyle(Text::Bold);
-
-					textRect = studentText.getLocalBounds();
-					studentText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					studentText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(studentText);
-
+					studentPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -828,45 +787,12 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-
-					Text studentIDText;
-					studentIDText.setFont(font);
-					studentIDText.setString(input);
-					studentIDText.setCharacterSize(80);
-					studentIDText.setFillColor(Color::Black);
-					studentIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = studentIDText.getLocalBounds();
-					studentIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					studentIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(studentIDText);
-
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 				if (validCourse == true) {
-					Text courseText;
-					courseText.setFont(font);
-					courseText.setString("Course ID");
-					courseText.setCharacterSize(80);
-					courseText.setFillColor(Color::Black);
-					courseText.setStyle(Text::Bold);
-
-					textRect = courseText.getLocalBounds();
-					courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(courseText);
-
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -922,45 +848,14 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-					Text courseIDText;
-					courseIDText.setFont(font);
-					courseIDText.setString(input);
-					courseIDText.setCharacterSize(80);
-					courseIDText.setFillColor(Color::Black);
-					courseIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = courseIDText.getLocalBounds();
-					courseIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(courseIDText);
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 			}
 			if (task3B == true) {
 				if (validStudentID == true) {
-					Text studentText;
-					studentText.setFont(font);
-					studentText.setString("Student ID");
-					studentText.setCharacterSize(80);
-					studentText.setFillColor(Color::Black);
-					studentText.setStyle(Text::Bold);
-
-					textRect = studentText.getLocalBounds();
-					studentText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					studentText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(studentText);
-
+					studentPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -1014,45 +909,12 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-
-					Text studentIDText;
-					studentIDText.setFont(font);
-					studentIDText.setString(input);
-					studentIDText.setCharacterSize(80);
-					studentIDText.setFillColor(Color::Black);
-					studentIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = studentIDText.getLocalBounds();
-					studentIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					studentIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(studentIDText);
-
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 				if (validCourse == true) {
-					Text courseText;
-					courseText.setFont(font);
-					courseText.setString("Course ID");
-					courseText.setCharacterSize(80);
-					courseText.setFillColor(Color::Black);
-					courseText.setStyle(Text::Bold);
-
-					textRect = courseText.getLocalBounds();
-					courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(courseText);
-
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -1107,45 +969,14 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-					Text courseIDText;
-					courseIDText.setFont(font);
-					courseIDText.setString(input);
-					courseIDText.setCharacterSize(80);
-					courseIDText.setFillColor(Color::Black);
-					courseIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = courseIDText.getLocalBounds();
-					courseIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(courseIDText);
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 			}
 			if (task4B == true) {
 				if (validCourse == true) {
-					Text courseText;
-					courseText.setFont(font);
-					courseText.setString("Course ID");
-					courseText.setCharacterSize(80);
-					courseText.setFillColor(Color::Black);
-					courseText.setStyle(Text::Bold);
-
-					textRect = courseText.getLocalBounds();
-					courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(courseText);
-
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -1200,46 +1031,14 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-					Text courseIDText;
-					courseIDText.setFont(font);
-					courseIDText.setString(input);
-					courseIDText.setCharacterSize(80);
-					courseIDText.setFillColor(Color::Black);
-					courseIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = courseIDText.getLocalBounds();
-					courseIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					courseIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(courseIDText);
-
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 			}
 			if (task5B == true) {
 				if (validTeacherID == true) {
-					Text teacherText;
-					teacherText.setFont(font);
-					teacherText.setString("Teacher ID");
-					teacherText.setCharacterSize(80);
-					teacherText.setFillColor(Color::Black);
-					teacherText.setStyle(Text::Bold);
-
-					textRect = teacherText.getLocalBounds();
-					teacherText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					teacherText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
-					window.draw(teacherText);
-
+					teacherPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					try {
 						Sleep(100);
 						if (event.type == Event::TextEntered) {
@@ -1282,45 +1081,277 @@ int main()
 						}
 					}
 					catch (...) {
-						Text invalid;
-						invalid.setFont(font);
-						invalid.setString("INVALID INPUT!");
-						invalid.setCharacterSize(50);
-						invalid.setFillColor(Color::Red);
-						invalid.setStyle(Text::Bold);
-
-						FloatRect textRect = invalid.getLocalBounds();
-						invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-						invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
-						window.draw(invalid);
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
 					}
-					Text teacherIDText;
-					teacherIDText.setFont(font);
-					teacherIDText.setString(input);
-					teacherIDText.setCharacterSize(80);
-					teacherIDText.setFillColor(Color::Black);
-					teacherIDText.setStyle(Text::Bold);
-
-					FloatRect textRect = teacherIDText.getLocalBounds();
-					teacherIDText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-					teacherIDText.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
-					window.draw(teacherIDText);
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 			}
 		}
 
-		if (done == true) {
-			Text  closeProgram;
-			closeProgram.setFont(font);
-			closeProgram.setString("Task Done!");
-			closeProgram.setCharacterSize(100);
-			closeProgram.setFillColor(Color::Black);
-			closeProgram.setStyle(Text::Bold);
+		if (isTeacher == true) {
+			if (taskSelector == true) {
+				Text task1;
+				task1.setFont(font);
+				task1.setString("Manage Attendance");
+				task1.setCharacterSize(50);
+				task1.setFillColor(Color::Black);
+				task1.setStyle(Text::Bold);
+				FloatRect textRect = task1.getLocalBounds();
+				task1.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task1.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+				window.draw(task1);
 
-			textRect = closeProgram.getLocalBounds();
-			closeProgram.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-			closeProgram.setPosition(Vector2f(SCRWIDTH / 2.0f, SCRHEIGHT / 2.0f));
-			window.draw(closeProgram);
+				Text task2;
+				task2.setFont(font);
+				task2.setString("View Attendance");
+				task2.setCharacterSize(50);
+				task2.setFillColor(Color::Black);
+				task2.setStyle(Text::Bold);
+				textRect = task2.getLocalBounds();
+				task2.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task2.setPosition(Vector2f(SCRWIDTH / 2.0f, 300));
+				window.draw(task2);
+
+				Text task3;
+				task3.setFont(font);
+				task3.setString("Manage Evaluations");
+				task3.setCharacterSize(50);
+				task3.setFillColor(Color::Black);
+				task3.setStyle(Text::Bold);
+				textRect = task3.getLocalBounds();
+				task3.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task3.setPosition(Vector2f(SCRWIDTH / 2.0f, 400));
+				window.draw(task3);
+
+				Text task4;
+				task4.setFont(font);
+				task4.setString("View Evaluations");
+				task4.setCharacterSize(50);
+				task4.setFillColor(Color::Black);
+				task4.setStyle(Text::Bold);
+				textRect = task4.getLocalBounds();
+				task4.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task4.setPosition(Vector2f(SCRWIDTH / 2.0f, 500));
+				window.draw(task4);
+
+				Text task5;
+				task5.setFont(font);
+				task5.setString("Assign Grades");
+				task5.setCharacterSize(50);
+				task5.setFillColor(Color::Black);
+				task5.setStyle(Text::Bold);
+				textRect = task5.getLocalBounds();
+				task5.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task5.setPosition(Vector2f(SCRWIDTH / 2.0f, 600));
+				window.draw(task5);
+
+				Text task6;
+				task6.setFont(font);
+				task6.setString("Change Password");
+				task6.setCharacterSize(50);
+				task6.setFillColor(Color::Black);
+				task6.setStyle(Text::Bold);
+				textRect = task6.getLocalBounds();
+				task6.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task6.setPosition(Vector2f(SCRWIDTH / 2.0f, 690));
+				window.draw(task6);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+					auto translated_pos = window.mapPixelToCoords(mouse_pos);
+					Sleep(500);
+					if (task1.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task1B = true;
+						validCourse = true;
+					}
+					if (task2.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task2B = true;
+						validCourse = true;
+					}
+					if (task3.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task3B = true;
+						validCourse = true;
+					}
+					if (task4.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task4B = true;
+						validCourse = true;
+					}
+					if (task5.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task5B = true;
+						validCourse = true;
+					}
+					if (task6.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task6B = true;
+						validCourse = true;
+					}
+				}
+			}
+			if (task1B == true) {
+				if (validCourse == true) {
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									if (size != 7) {
+										throw size;
+									}
+									for (int i = 0; i < 7; i++) {
+										courseID[i] = input[i];
+									}
+									courseID[7] = '\0';
+									if (teacherUser->courseAlreadyAssigned(courseID) == false) {
+										throw false;
+									}
+
+									validCourse = false;
+									attendOption = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+				if (attendOption == true) {
+					teacherUser->newAttendGraphic(window, font, courseID);
+
+					done = true;
+
+					Text newAttend;
+					newAttend.setFont(font);
+					newAttend.setString("New Attendance");
+					newAttend.setCharacterSize(80);
+					newAttend.setFillColor(Color::Black);
+					newAttend.setStyle(Text::Bold);
+					textRect = newAttend.getLocalBounds();
+					newAttend.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					newAttend.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
+					window.draw(newAttend);
+
+					Text manageAttend;
+					manageAttend.setFont(font);
+					manageAttend.setString("Manage Attendance");
+					manageAttend.setCharacterSize(80);
+					manageAttend.setFillColor(Color::Black);
+					manageAttend.setStyle(Text::Bold);
+					textRect = manageAttend.getLocalBounds();
+					manageAttend.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					manageAttend.setPosition(Vector2f(SCRWIDTH / 2.0f, 550));
+					window.draw(manageAttend);
+
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+						auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+						auto translated_pos = window.mapPixelToCoords(mouse_pos);
+						Sleep(500);
+						if (newAttend.getGlobalBounds().contains(translated_pos)) {
+							teacherUser->newAttendGraphic(window, font, courseID);
+							isTeacher = false;
+							done = true;
+						}
+						if (manageAttend.getGlobalBounds().contains(translated_pos)) {
+
+							isTeacher = false;
+							done = true;
+						}
+					}
+				}
+			}
+			if (task2B == true) {
+				if (validCourse == true) {
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									if (size != 7) {
+										throw size;
+									}
+									for (int i = 0; i < 7; i++) {
+										courseID[i] = input[i];
+									}
+									courseID[7] = '\0';
+									if (teacherUser->courseAlreadyAssigned(courseID) == false) {
+										throw false;
+									}
+									window.clear();
+									teacherUser->viewAttendGraphic(window, font, courseID);
+									Sleep(5000);
+
+									validCourse = false;
+									attendOption = true;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+			if (task3B == true) {
+
+			}
+			if (task4B == true) {
+
+			}
+			if (task5B == true) {
+
+			}
+		}
+
+		if (done == true) {
+			char doneText[] = { "Task Done!" };
+			printText(window, font, SCRWIDTH, SCRHEIGHT, doneText);
+
 		}
 
         window.display();

@@ -1,10 +1,12 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include <fstream>
 #include "Person.h"
 #include "Employee.h"
 #include "Teacher.h"
 #include "Course.h"
 using namespace std;
+using namespace sf;
 
 Teacher::Teacher() : Employee(), Person() {
 	ID = nullptr;
@@ -237,10 +239,26 @@ void Teacher::viewAttend(char* courseID) {
 	}
 }
 
+void Teacher::viewAttendGraphic(RenderWindow& window, Font& font, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
+			coursesList[i]->viewAttendGraphic(window, font);
+		}
+	}
+}
+
 void Teacher::newAttend(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
 			coursesList[i]->newAttend();
+		}
+	}
+}
+
+void Teacher::newAttendGraphic(RenderWindow& window, Font& font, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
+			coursesList[i]->newAttendGraphic(window, font);
 		}
 	}
 }

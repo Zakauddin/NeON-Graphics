@@ -1,4 +1,6 @@
 #pragma once
+#include <SFML/Graphics.hpp>
+using namespace sf;
 
 class Registration {
 	char* studentID;
@@ -16,6 +18,7 @@ public:
 	char* getCourseID();
 	char* getStudentID();
 	void newAttend();
+	void newAttendGraphic(RenderWindow& window, Font& font);
 	void appendAttend();
 	int* getAttend();
 	int getNumOfAttend();
