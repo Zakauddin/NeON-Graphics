@@ -1,5 +1,8 @@
+#include <SFML/Graphics.hpp>
+#include <windows.h>
 #include <iostream>
 #include <fstream>
+#include <conio.h>
 #include "University.h"
 #include "Department.h"
 #include "Course.h"
@@ -8,6 +11,7 @@
 #include "It.h"
 #include "Student.h"
 using namespace std;
+using namespace sf;
 
 University::University() {
 	ifstream uniFile("UniInfo.txt");
@@ -586,6 +590,22 @@ void University::printGrade(char* depID, char* courseID) {
 		}
 		if (found == true) {
 			depList[i]->printGrades(courseID);
+		}
+		temp = nullptr;
+	}
+}
+
+void University::printGradeGraphic(RenderWindow& window, Font& font, char* depID, char* courseID) {
+	for (int i = 0; i < totalDep; i++) {
+		char* temp = depList[i]->getID();
+		bool found = true;
+		for (int i = 0; i < 2; i++) {
+			if (depID[i] != temp[i]) {
+				found = false;
+			}
+		}
+		if (found == true) {
+			depList[i]->printGradeGraphic(window, font, courseID);
 		}
 		temp = nullptr;
 	}

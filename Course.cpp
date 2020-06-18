@@ -1,9 +1,12 @@
+#include <SFML/Graphics.hpp>
+#include <windows.h>
 #include <iostream>
 #include <fstream>
 #include "Course.h"
 #include "Registration.h"
 #include "Student.h"
 using namespace std;
+using namespace sf;
 
 Course::Course() {
 	section = nullptr;
@@ -239,6 +242,51 @@ void Course::printGrades() {
 	}
 	else {
 		for (int i = 0; i < numOfStudents; i++) {
+			cout << studentList[i]->getStudentID() << " : " << studentList[i]->getGrade() << endl;
+		}
+	}
+}
+
+void Course::printGradeGraphic(RenderWindow& window, Font& font) {
+	if (numOfStudents == 0) {
+		cout << "No students registered to this course yet!" << endl;
+	}
+	else {
+		Texture backgroundImg;
+		backgroundImg.loadFromFile("background.png");
+		Sprite background(backgroundImg);
+		background.scale((float)0.69, (float)0.69);
+		background.setPosition(0, 0);
+
+		window.clear();
+		window.draw(background);
+
+		for (int i = 0; i < numOfStudents; i++) {
+			Text uniName;
+			uniName.setFont(font);
+			uniName.setString(studentList[i]->getStudentID());
+			uniName.setCharacterSize(50);
+			uniName.setFillColor(Color::Black);
+			uniName.setStyle(Text::Bold);
+
+			FloatRect textRect = uniName.getLocalBounds();
+			uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+			uniName.setPosition(250, 100 + (75 * i));
+			window.draw(uniName);
+
+			Text gradePrint;
+			gradePrint.setFont(font);
+			gradePrint.setString(studentList[i]->getGrade());
+			gradePrint.setCharacterSize(50);
+			gradePrint.setFillColor(Color::Black);
+			gradePrint.setStyle(Text::Bold);
+
+			textRect = gradePrint.getLocalBounds();
+			gradePrint.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+			gradePrint.setPosition(750, 100 + (75 * i));
+			window.draw(gradePrint);
+
+			//window.display();
 			cout << studentList[i]->getStudentID() << " : " << studentList[i]->getGrade() << endl;
 		}
 	}

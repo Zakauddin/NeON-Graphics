@@ -1,7 +1,10 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+#include <windows.h>
 #include "Registration.h"
 #include "Student.h"
+using namespace sf;
 
 class TA;
 
@@ -31,6 +34,7 @@ public:
 	void printMarks();
 	void newGrades();
 	void printGrades();
+	void printGradeGraphic(RenderWindow& window, Font& font);
 	void addStudent(char* studentID);
 	void removeStudent(char* studentID);
 	~Course();

@@ -1,5 +1,7 @@
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
+#include <windows.h>
 #include "Department.h"
 #include "Course.h"
 #include "Registration.h"
@@ -8,6 +10,7 @@
 #include "Student.h"
 #include "TA.h"
 using namespace std;
+using namespace sf;
 
 void objPrint(Person* obj) {
 	obj->print();
@@ -442,6 +445,14 @@ void Department::printGrades(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
 			courseList[i]->printGrades();
+		}
+	}
+}
+
+void Department::printGradeGraphic(RenderWindow& window, Font& font, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
+			courseList[i]->printGradeGraphic(window, font);
 		}
 	}
 }

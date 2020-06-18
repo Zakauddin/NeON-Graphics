@@ -1,10 +1,14 @@
 #pragma once
+#include <SFML/Graphics.hpp>
+#include <windows.h>
+#include <conio.h>
 #include "Department.h"
 #include "Course.h"
 #include "Registration.h"
 #include "Teacher.h"
 #include "It.h"
 #include "Student.h"
+using namespace sf;
 
 class University {
 	char* name;
@@ -57,6 +61,9 @@ public:
 	void addTeacherToDep(char* depID, char* teachID);
 	void printCourses(char* depID);
 	void printGrade(char* depID, char* courseID);
+	/*template<class typeA, class typeB>
+	void printGradeGraphic(typeA& window, typeB font, char* depID, char* courseID);*/
+	void printGradeGraphic(RenderWindow& window, Font& font, char* depID, char* courseID);
 	int getStudentCount(char* depID, char* courseID);
 	void newMarks(char* depID, char* courseID);
 	void appendMarks(char* depID, char* courseID);
