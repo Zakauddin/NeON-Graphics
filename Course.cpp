@@ -240,6 +240,16 @@ void Course::newMarks() {
 	}
 }
 
+void Course::newMarksGraphic(RenderWindow& window, Font& font, Event& event ) {
+	for (int i = 0; i < numOfStudents; i++) {
+		char* tempGrade = studentList[i]->getGrade();
+		if (tempGrade[0] != 'W') {
+			studentList[i]->newMarksGraphic(window, font, event);
+		}
+		tempGrade = nullptr;
+	}
+}
+
 void Course::appendMarks() {
 	char studentID[7];
 	cout << "Please enter the student's ID: ";
@@ -299,11 +309,69 @@ void Course::printMarks() {
 	}
 }
 
+void Course::viewMarksGraphic(RenderWindow& window, Font& font) {
+	if (numOfStudents == 0) {
+		cout << "No students registered to this course yet!" << endl;
+	}
+	else {
+		Texture backgroundImg;
+		backgroundImg.loadFromFile("background.png");
+		Sprite background(backgroundImg);
+		background.scale((float)0.69, (float)0.69);
+		background.setPosition(0, 0);
+
+		window.clear();
+
+		window.draw(background);
+
+		for (int i = 0; i < numOfStudents; i++) {
+			Text uniName;
+			uniName.setFont(font);
+			uniName.setString(studentList[i]->getStudentID());
+			uniName.setCharacterSize(50);
+			uniName.setFillColor(Color::Black);
+			uniName.setStyle(Text::Bold);
+			FloatRect textRect = uniName.getLocalBounds();
+			uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+			uniName.setPosition(250, 100 + (i * 75));
+			window.draw(uniName);
+
+			int* temp = studentList[i]->getMarks();
+			for (int j = 0; j < studentList[i]->getNumOfAttend(); j++) {
+				char buffer[5];
+				_itoa_s(temp[j], buffer, 10);
+				Text uniName;
+				uniName.setFont(font);
+				uniName.setString(buffer);
+				uniName.setCharacterSize(50);
+				uniName.setFillColor(Color::Black);
+				uniName.setStyle(Text::Bold);
+				FloatRect textRect = uniName.getLocalBounds();
+				uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				uniName.setPosition(400 + (100 * j), 100 + (i * 75));
+				window.draw(uniName);
+			}
+			temp = nullptr;
+		}
+		window.display();
+	}
+}
+
 void Course::newGrades() {
 	for (int i = 0; i < numOfStudents; i++) {
 		char* tempGrade = studentList[i]->getGrade();
 		if (tempGrade[0] != 'W') {
 			studentList[i]->newGrades();
+		}
+		tempGrade = nullptr;
+	}
+}
+
+void Course::setGradesGraphic(RenderWindow& window, Font& font, Event& event) {
+	for (int i = 0; i < numOfStudents; i++) {
+		char* tempGrade = studentList[i]->getGrade();
+		if (tempGrade[0] != 'W') {
+			studentList[i]->setGradesGraphic(window, font, event);
 		}
 		tempGrade = nullptr;
 	}

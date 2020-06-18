@@ -1241,10 +1241,6 @@ int main()
 					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
 				}
 				if (attendOption == true) {
-					teacherUser->newAttendGraphic(window, font, courseID);
-
-					done = true;
-
 					Text newAttend;
 					newAttend.setFont(font);
 					newAttend.setString("New Attendance");
@@ -1338,13 +1334,198 @@ int main()
 				}
 			}
 			if (task3B == true) {
+				if (validCourse == true) {
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
 
+									int size = strlen(input);
+									if (size != 7) {
+										throw size;
+									}
+									for (int i = 0; i < 7; i++) {
+										courseID[i] = input[i];
+									}
+									courseID[7] = '\0';
+									if (teacherUser->courseAlreadyAssigned(courseID) == false) {
+										throw false;
+									}
+
+									validCourse = false;
+									attendOption = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+				if (attendOption == true) {
+					Text newAttend;
+					newAttend.setFont(font);
+					newAttend.setString("New Marks");
+					newAttend.setCharacterSize(80);
+					newAttend.setFillColor(Color::Black);
+					newAttend.setStyle(Text::Bold);
+					textRect = newAttend.getLocalBounds();
+					newAttend.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					newAttend.setPosition(Vector2f(SCRWIDTH / 2.0f, 350));
+					window.draw(newAttend);
+
+					Text manageAttend;
+					manageAttend.setFont(font);
+					manageAttend.setString("Manage Marks");
+					manageAttend.setCharacterSize(80);
+					manageAttend.setFillColor(Color::Black);
+					manageAttend.setStyle(Text::Bold);
+					textRect = manageAttend.getLocalBounds();
+					manageAttend.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					manageAttend.setPosition(Vector2f(SCRWIDTH / 2.0f, 550));
+					window.draw(manageAttend);
+
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+						auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+						auto translated_pos = window.mapPixelToCoords(mouse_pos);
+						Sleep(500);
+						if (newAttend.getGlobalBounds().contains(translated_pos)) {
+							teacherUser->newMarksGraphic(window, font, event, courseID);
+							isTeacher = false;
+							done = true;
+						}
+						if (manageAttend.getGlobalBounds().contains(translated_pos)) {
+
+							isTeacher = false;
+							done = true;
+						}
+					}
+				}
 			}
 			if (task4B == true) {
+				if (validCourse == true) {
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
 
+									int size = strlen(input);
+									if (size != 7) {
+										throw size;
+									}
+									for (int i = 0; i < 7; i++) {
+										courseID[i] = input[i];
+									}
+									courseID[7] = '\0';
+									if (teacherUser->courseAlreadyAssigned(courseID) == false) {
+										throw false;
+									}
+									window.clear();
+									teacherUser->viewMarksGraphic(window, font, courseID);
+									Sleep(5000);
+
+									validCourse = false;
+									attendOption = true;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
 			}
 			if (task5B == true) {
+				if (validCourse == true) {
+					coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
 
+									int size = strlen(input);
+									if (size != 7) {
+										throw size;
+									}
+									for (int i = 0; i < 7; i++) {
+										courseID[i] = input[i];
+									}
+									courseID[7] = '\0';
+									if (teacherUser->courseAlreadyAssigned(courseID) == false) {
+										throw false;
+									}
+									window.clear();
+									teacherUser->setGradesGraphic(window, font, event, courseID);
+									Sleep(5000);
+
+									validCourse = false;
+									attendOption = true;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
 			}
 		}
 

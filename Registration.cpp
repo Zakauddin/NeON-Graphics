@@ -179,7 +179,6 @@ void Registration::newAttend() {
 void Registration::newAttendGraphic(RenderWindow& window, Font& font) {
 	char tempData[33][50];
 	int count = reader(tempData, studentID, courseID);
-	cout << "Please press 1 for present or press 0 for absent: " << endl;
 	bool done = false;
 	int attend;
 	while (done == false) {
@@ -371,6 +370,117 @@ void Registration::newMarks() {
 	newFile.close();
 }
 
+void Registration::newMarksGraphic(RenderWindow& window, Font& font, Event& event) {
+	Texture backgroundImg;
+	backgroundImg.loadFromFile("background.png");
+	Sprite background(backgroundImg);
+	background.scale((float)0.69, (float)0.69);
+	background.setPosition(0, 0);
+
+	window.clear();
+	window.draw(background);
+
+	Text uniName;
+	uniName.setFont(font);
+	uniName.setString(studentID);
+	uniName.setCharacterSize(80);
+	uniName.setFillColor(Color::Black);
+	uniName.setStyle(Text::Bold);
+	FloatRect textRect = uniName.getLocalBounds();
+	uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	uniName.setPosition(640, 250);
+	window.draw(uniName);
+
+	bool done = false;
+	char marksInput[10] = { ' ' };
+	int count1 = 0;
+	while (done == false) {
+		window.clear();
+		window.draw(background);
+		window.draw(uniName);
+		while (window.pollEvent(event)) {
+			if (event.type == Event::Closed)
+				window.close();
+
+			if (event.type == Event::TextEntered) {
+				if (event.text.unicode < 128) {
+					if (event.text.unicode == '\r') {
+						marksInput[count1] = '\0';
+
+						int temp = atoi(marksInput);
+						if ((temp < 0) || (temp > 100)) {
+							for (int i = 0; i < count1; i++) {
+								marksInput[i] = ' ';
+							}
+							count1 = 0;
+						}
+						else {
+							done = true;
+						}
+					}
+					else if (event.text.unicode == '\b') {
+						if (count1 > 0) {
+							marksInput[count1 - 1] = ' ';
+							count1--;
+						}
+					}
+					else {
+						marksInput[count1] = static_cast<char>(event.text.unicode);
+						count1++;
+					}
+				}
+			}
+		}
+		Text input;
+		input.setFont(font);
+		input.setString(marksInput);
+		input.setCharacterSize(80);
+		input.setFillColor(Color::Black);
+		input.setStyle(Text::Bold);
+		textRect = input.getLocalBounds();
+		input.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+		input.setPosition(640, 450);
+		window.draw(input);
+
+		window.display();
+	}
+	
+	numOfMarks++;
+	int* temp = new int[numOfMarks];
+	for (int i = 0; i < numOfMarks - 1; i++) {
+		temp[i] = marks[i];
+	}
+	temp[numOfMarks - 1] = atoi(marksInput);
+	if (marks != nullptr) {
+		delete[]marks;
+	}
+	marks = temp;
+	temp = nullptr;
+	char tempData[33][50];
+	int count = reader(tempData, studentID, courseID);
+	char file[] = "      .txt";
+	for (int i = 0; i < 6; i++) {
+		file[i] = studentID[i];
+	}
+	ofstream newFile(file);
+	for (int i = 0; i < count; i++) {
+		newFile << tempData[i] << endl;
+	}
+	newFile << courseID << endl;
+	newFile << numOfAttend << endl;
+	for (int i = 0; i < numOfAttend; i++) {
+		newFile << attendance[i] << ',';
+	}
+	newFile << endl;
+	newFile << numOfMarks << endl;
+	for (int i = 0; i < numOfMarks; i++) {
+		newFile << marks[i] << ',';
+	}
+	newFile << endl;
+	newFile << grade << endl;
+	newFile.close();
+}
+
 void Registration::appendMarks() {
 	cout << "Please enter the evaluation you want to edit: ";
 	int eval;
@@ -489,6 +599,113 @@ void Registration::newGrades() {
 		grade[i] = gradeInput[i];
 	}
 	grade[size] = '\0';
+	char tempData[33][50];
+	int count = reader(tempData, studentID, courseID);
+	char file[] = "      .txt";
+	for (int i = 0; i < 6; i++) {
+		file[i] = studentID[i];
+	}
+	ofstream newFile(file);
+	for (int i = 0; i < count; i++) {
+		newFile << tempData[i] << endl;
+	}
+	newFile << courseID << endl;
+	newFile << numOfAttend << endl;
+	for (int i = 0; i < numOfAttend; i++) {
+		newFile << attendance[i] << ',';
+	}
+	newFile << endl;
+	newFile << numOfMarks << endl;
+	for (int i = 0; i < numOfMarks; i++) {
+		newFile << marks[i] << ',';
+	}
+	newFile << endl;
+	newFile << grade << endl;
+	newFile.close();
+}
+
+void Registration::setGradesGraphic(RenderWindow& window, Font& font, Event& event) {
+	Texture backgroundImg;
+	backgroundImg.loadFromFile("background.png");
+	Sprite background(backgroundImg);
+	background.scale((float)0.69, (float)0.69);
+	background.setPosition(0, 0);
+
+	window.clear();
+	window.draw(background);
+
+	Text uniName;
+	uniName.setFont(font);
+	uniName.setString(studentID);
+	uniName.setCharacterSize(80);
+	uniName.setFillColor(Color::Black);
+	uniName.setStyle(Text::Bold);
+	FloatRect textRect = uniName.getLocalBounds();
+	uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	uniName.setPosition(640, 250);
+	window.draw(uniName);
+
+	bool done = false;
+	char gradeInput[5] = { ' ' };
+	int count1 = 0;
+	while (done == false) {
+		window.clear();
+		window.draw(background);
+		window.draw(uniName);
+		while (window.pollEvent(event)) {
+			if (event.type == Event::Closed)
+				window.close();
+
+			if (event.type == Event::TextEntered) {
+				if (event.text.unicode < 128) {
+					if (event.text.unicode == '\r') {
+						gradeInput[count1] = '\0';
+
+						if ((strcmp(gradeInput, "A+") != 0) && (strcmp(gradeInput, "A") != 0) && (strcmp(gradeInput, "B") != 0) && (strcmp(gradeInput, "C") != 0) && (strcmp(gradeInput, "D") != 0) && (strcmp(gradeInput, "F") != 0)) {
+							for (int i = 0; i < count1; i++) {
+								gradeInput[i] = ' ';
+							}
+							count1 = 0;
+						}
+						else {
+							int size = strlen(gradeInput);
+							grade = new char[size + 1];
+							for (int i = 0; i < size; i++) {
+								grade[i] = gradeInput[i];
+							}
+							grade[size] = '\0';
+
+							done = true;
+						}
+					}
+					else if (event.text.unicode == '\b') {
+						if (count1 > 0) {
+							gradeInput[count1 - 1] = ' ';
+							count1--;
+						}
+					}
+					else {
+						gradeInput[count1] = static_cast<char>(event.text.unicode);
+						count1++;
+					}
+				}
+			}
+		}
+		Text input;
+		input.setFont(font);
+		input.setString(gradeInput);
+		input.setCharacterSize(80);
+		input.setFillColor(Color::Black);
+		input.setStyle(Text::Bold);
+		textRect = input.getLocalBounds();
+		input.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+		input.setPosition(640, 450);
+		window.draw(input);
+
+		window.display();
+	}
+
+	
 	char tempData[33][50];
 	int count = reader(tempData, studentID, courseID);
 	char file[] = "      .txt";

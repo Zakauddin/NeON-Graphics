@@ -279,6 +279,14 @@ void Teacher::newMarks(char* courseID) {
 	}
 }
 
+void Teacher::newMarksGraphic(RenderWindow& window, Font& font, Event& event, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
+			coursesList[i]->newMarksGraphic(window, font, event);
+		}
+	}
+}
+
 void Teacher::appendMarks(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
@@ -295,10 +303,26 @@ void Teacher::viewMarks(char* courseID) {
 	}
 }
 
+void Teacher::viewMarksGraphic(RenderWindow& window, Font& font, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
+			coursesList[i]->viewMarksGraphic(window, font);
+		}
+	}
+}
+
 void Teacher::setGrades(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
 			coursesList[i]->newGrades();
+		}
+	}
+}
+
+void Teacher::setGradesGraphic(RenderWindow& window, Font& font, Event& event, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
+			coursesList[i]->setGradesGraphic(window, font, event);
 		}
 	}
 }

@@ -32,9 +32,12 @@ public:
 	void printAttendance();
 	void viewAttendGraphic(RenderWindow& window, Font& font);
 	void newMarks();
+	void newMarksGraphic(RenderWindow& window, Font& font, Event& event);
 	void appendMarks();
 	void printMarks();
+	void viewMarksGraphic(RenderWindow& window, Font& font);
 	void newGrades();
+	void setGradesGraphic(RenderWindow& window, Font& font, Event& event);
 	void printGrades();
 	void printGradeGraphic(RenderWindow& window, Font& font);
 	void addStudent(char* studentID);

@@ -32,8 +32,11 @@ public:
 	void newAttendGraphic(RenderWindow& window, Font& font, char* courseID);
 	void appendAttend(char* courseID);
 	void newMarks(char* courseID);
+	void newMarksGraphic(RenderWindow& window, Font& font, Event& event, char* courseID);
 	void appendMarks(char* courseID);
 	void viewMarks(char* courseID);
+	void viewMarksGraphic(RenderWindow& window, Font& font, char* courseID);
 	void setGrades(char* courseID);
+	void setGradesGraphic(RenderWindow& window, Font& font, Event& event, char* courseID);
 	~Teacher();
 };
