@@ -1,0 +1,8 @@
+pass
+Fakhar Imam
+4
+CS100-C
+CS200-A
+CS300-A
+CS100-A
+

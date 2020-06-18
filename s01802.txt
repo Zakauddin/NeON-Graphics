@@ -1,0 +1,9 @@
+pass
+Umar Nadeem
+1
+CS100-C
+2
+1,0,
+2
+12,78,
+A

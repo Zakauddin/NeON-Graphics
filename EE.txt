@@ -1,0 +1,14 @@
+Electrical Engineering
+3
+EE400-A
+EE400-B
+EE500-A
+2
+t00888
+t00999
+i00512
+4
+s01861
+s01862
+s01863
+s01864
