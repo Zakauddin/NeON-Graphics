@@ -501,7 +501,7 @@ void Department::viewMarks(char* courseID) {
 void Department::viewMarksGraphics(RenderWindow& window, Font& font, char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
-			courseList[i]->printGradeGraphic(window, font);
+			courseList[i]->viewMarksGraphic(window, font);
 		}
 	}
 }

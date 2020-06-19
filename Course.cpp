@@ -337,7 +337,7 @@ void Course::viewMarksGraphic(RenderWindow& window, Font& font) {
 			window.draw(uniName);
 
 			int* temp = studentList[i]->getMarks();
-			for (int j = 0; j < studentList[i]->getNumOfAttend(); j++) {
+			for (int j = 0; j < studentList[i]->getNumOfMarks(); j++) {
 				char buffer[5];
 				_itoa_s(temp[j], buffer, 10);
 				Text uniName;

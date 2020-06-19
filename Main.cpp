@@ -2820,17 +2820,16 @@ int main()
 				done = true;
 			}
 			if (task2B == true) {
-				uni.viewMarksGraphics(window, font, tempID, courseID);
+				uni.viewMarksGraphics(window, font, tempID, taCourse);
 				isTA = false;
 				done = true;
 				Sleep(5000);
 			}
 		}
-
+		 
 		if (done == true) {
 			char doneText[] = { "Task Done!" };
 			printText(window, font, SCRWIDTH, SCRHEIGHT, doneText);
-
 		}
 
         window.display();
