@@ -382,6 +382,8 @@ int main()
 	bool isHOD = false;
 	bool isTeacher = false;
 	bool isManager = false;
+	bool isStudent = false;
+	bool isTA = false;
 
 	bool taskSelector = false;
 	bool task1B = false;
@@ -395,6 +397,7 @@ int main()
 	bool validCourse = false;
 	bool validTeacherID = false;
 	bool validStudentID = false;
+	bool taSelector = false;
 
 	int count = 0;
 	char input[20] = { ' ' };
@@ -414,6 +417,8 @@ int main()
 
 	Teacher* teacherUser = nullptr;
 	ItManager* itUser = nullptr;
+	Student* studentUser = nullptr;
+	TA* taUser = nullptr;
 
 	uni.print();
 
@@ -560,7 +565,18 @@ int main()
 									depID = uni.itDepGetter(itUser);
 									isManager = true;
 								}
-
+								else if (username[0] == 's') {
+									taUser = objectFinder(username, TAList, tNumOfTA);
+									if (taUser == nullptr) {
+										isStudent = true;
+										studentUser = objectFinder(username, stList.getList(), tNumOfSt);
+									}
+									else {
+										isTA = true;
+										taSelector = true;
+										taskSelector = false;
+									}
+								}
 							}
 							else if (event.text.unicode == '\b') {
 								if (count > 0) {
@@ -1731,7 +1747,6 @@ int main()
 					}
 				}
 			}
-
 			if (task1B == true) {					
 				if (validTeacherID == true) {
 					teacherPrintText(window, font, SCRWIDTH, SCRHEIGHT);
@@ -2213,6 +2228,547 @@ int main()
 			}
 		}
 
+		if (isStudent == true) {
+			if (taskSelector == true) {
+				Text task1;
+				task1.setFont(font);
+				task1.setString("Register a New Course");
+				task1.setCharacterSize(50);
+				task1.setFillColor(Color::Black);
+				task1.setStyle(Text::Bold);
+				FloatRect textRect = task1.getLocalBounds();
+				task1.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task1.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+				window.draw(task1);
+
+				Text task2;
+				task2.setFont(font);
+				task2.setString("Unregister a Course");
+				task2.setCharacterSize(50);
+				task2.setFillColor(Color::Black);
+				task2.setStyle(Text::Bold);
+				textRect = task2.getLocalBounds();
+				task2.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task2.setPosition(Vector2f(SCRWIDTH / 2.0f, 300));
+				window.draw(task2);
+
+				Text task3;
+				task3.setFont(font);
+				task3.setString("Withdraw a Course");
+				task3.setCharacterSize(50);
+				task3.setFillColor(Color::Black);
+				task3.setStyle(Text::Bold);
+				textRect = task3.getLocalBounds();
+				task3.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task3.setPosition(Vector2f(SCRWIDTH / 2.0f, 400));
+				window.draw(task3);
+
+				Text task4;
+				task4.setFont(font);
+				task4.setString("View Marks");
+				task4.setCharacterSize(50);
+				task4.setFillColor(Color::Black);
+				task4.setStyle(Text::Bold);
+				textRect = task4.getLocalBounds();
+				task4.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task4.setPosition(Vector2f(SCRWIDTH / 2.0f, 500));
+				window.draw(task4);
+
+				Text task5;
+				task5.setFont(font);
+				task5.setString("View Attendance");
+				task5.setCharacterSize(50);
+				task5.setFillColor(Color::Black);
+				task5.setStyle(Text::Bold);
+				textRect = task5.getLocalBounds();
+				task5.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task5.setPosition(Vector2f(SCRWIDTH / 2.0f, 600));
+				window.draw(task5);
+
+				Text task6;
+				task6.setFont(font);
+				task6.setString("Change Password");
+				task6.setCharacterSize(50);
+				task6.setFillColor(Color::Black);
+				task6.setStyle(Text::Bold);
+				textRect = task6.getLocalBounds();
+				task6.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task6.setPosition(Vector2f(SCRWIDTH / 2.0f, 690));
+				window.draw(task6);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+					auto translated_pos = window.mapPixelToCoords(mouse_pos);
+					Sleep(500);
+					if (task1.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task1B = true;
+						validCourse = true;
+					}
+					if (task2.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task2B = true;
+						validCourse = true;
+					}
+					if (task3.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task3B = true;
+						validCourse = true;
+					}
+					if (task4.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task4B = true;
+						validCourse = true;
+					}
+					if (task5.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task5B = true;
+						validCourse = true;
+					}
+					if (task6.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task5B = true;
+						validStudentID = true;
+					}
+				}
+			}
+			if (task1B == true) {
+				if (studentUser->getNumOfCourses() != 5) {
+					if (validCourse == true) {
+						coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						try {
+							Sleep(100);
+							if (event.type == Event::TextEntered) {
+								if (event.text.unicode < 128) {
+									if (event.text.unicode == '\r') {
+										input[count] = '\0';
+
+										int size = strlen(input);
+										if (size != 7) {
+											throw size;
+										}
+										for (int i = 0; i < 7; i++) {
+											courseID[i] = input[i];
+										}
+										courseID[7] = '\0';
+										if (studentUser->courseAlreadyRegistered(courseID) == true) {
+											throw true;
+										}
+										char tempID[3];
+										tempID[0] = courseID[0];
+										tempID[1] = courseID[1];
+										tempID[2] = '\0';
+										if (uni.getStudentCount(tempID, courseID) >= 50) {
+											throw 0.1;
+										}
+										if (uni.depChecker(tempID, username) == false) {
+											throw tempID;
+										}
+
+										uni.registerNewCourse(username, courseID);
+
+										isStudent = false;
+										done = true;
+										validCourse = false;
+
+										for (int i = 0; i < count; i++) {
+											input[i] = ' ';
+										}
+										count = 0;
+									}
+									else if (event.text.unicode == '\b') {
+										if (count > 0) {
+											input[count - 1] = ' ';
+											count--;
+										}
+									}
+									else {
+										input[count] = static_cast<char>(event.text.unicode);
+										count++;
+									}
+								}
+							}
+						}
+						catch (...) {
+							invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						}
+						printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+					}
+				}
+				else {
+					Text invalid;
+					invalid.setFont(font);
+					invalid.setString("Already have maximum Load!");
+					invalid.setCharacterSize(50);
+					invalid.setFillColor(Color::Red);
+					invalid.setStyle(Text::Bold);
+					FloatRect textRect = invalid.getLocalBounds();
+					invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
+					window.draw(invalid);
+				}
+			}
+			if (task2B == true) {
+				if (studentUser->getNumOfCourses() > 0) {
+					if (validCourse == true) {
+						coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						try {
+							Sleep(100);
+							if (event.type == Event::TextEntered) {
+								if (event.text.unicode < 128) {
+									if (event.text.unicode == '\r') {
+										input[count] = '\0';
+
+										int size = strlen(input);
+										if (size != 7) {
+											throw size;
+										}
+										for (int i = 0; i < 7; i++) {
+											courseID[i] = input[i];
+										}
+										courseID[7] = '\0';
+										if (studentUser->courseAlreadyRegistered1(courseID) == false) {
+											throw false;
+										}
+
+										studentUser->unregisterCourse(courseID);
+
+										isStudent = false;
+										done = true;
+										validCourse = false;
+
+										for (int i = 0; i < count; i++) {
+											input[i] = ' ';
+										}
+										count = 0;
+									}
+									else if (event.text.unicode == '\b') {
+										if (count > 0) {
+											input[count - 1] = ' ';
+											count--;
+										}
+									}
+									else {
+										input[count] = static_cast<char>(event.text.unicode);
+										count++;
+									}
+								}
+							}
+						}
+						catch (...) {
+							invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						}
+						printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+					}
+				}
+				else {
+					Text invalid;
+					invalid.setFont(font);
+					invalid.setString("No courses registered!");
+					invalid.setCharacterSize(50);
+					invalid.setFillColor(Color::Red);
+					invalid.setStyle(Text::Bold);
+					FloatRect textRect = invalid.getLocalBounds();
+					invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
+					window.draw(invalid);
+				}
+			}
+			if (task3B == true) {
+				if (studentUser->getNumOfCourses() > 0) {
+					if (validCourse == true) {
+						coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						try {
+							Sleep(100);
+							if (event.type == Event::TextEntered) {
+								if (event.text.unicode < 128) {
+									if (event.text.unicode == '\r') {
+										input[count] = '\0';
+
+										int size = strlen(input);
+										if (size != 7) {
+											throw size;
+										}
+										for (int i = 0; i < 7; i++) {
+											courseID[i] = input[i];
+										}
+										courseID[7] = '\0';
+										if (studentUser->courseAlreadyRegistered1(courseID) == false) {
+											throw false;
+										}
+
+										studentUser->withdraw(courseID);
+
+										isStudent = false;
+										done = true;
+										validCourse = false;
+
+										for (int i = 0; i < count; i++) {
+											input[i] = ' ';
+										}
+										count = 0;
+									}
+									else if (event.text.unicode == '\b') {
+										if (count > 0) {
+											input[count - 1] = ' ';
+											count--;
+										}
+									}
+									else {
+										input[count] = static_cast<char>(event.text.unicode);
+										count++;
+									}
+								}
+							}
+						}
+						catch (...) {
+							invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						}
+						printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+					}
+				}
+				else {
+					Text invalid;
+					invalid.setFont(font);
+					invalid.setString("No courses registered!");
+					invalid.setCharacterSize(50);
+					invalid.setFillColor(Color::Red);
+					invalid.setStyle(Text::Bold);
+					FloatRect textRect = invalid.getLocalBounds();
+					invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
+					window.draw(invalid);
+				}
+			}
+			if (task4B == true) {
+				if (studentUser->getNumOfCourses() > 0) {
+					if (validCourse == true) {
+						coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						try {
+							Sleep(100);
+							if (event.type == Event::TextEntered) {
+								if (event.text.unicode < 128) {
+									if (event.text.unicode == '\r') {
+										input[count] = '\0';
+
+										int size = strlen(input);
+										if (size != 7) {
+											throw size;
+										}
+										for (int i = 0; i < 7; i++) {
+											courseID[i] = input[i];
+										}
+										courseID[7] = '\0';
+										if (studentUser->courseAlreadyRegistered1(courseID) == false) {
+											throw false;
+										}
+
+										studentUser->viewMarksGraphics(window, font, courseID);
+										Sleep(5000);
+
+										isStudent = false;
+										done = true;
+										validCourse = false;
+
+										for (int i = 0; i < count; i++) {
+											input[i] = ' ';
+										}
+										count = 0;
+									}
+									else if (event.text.unicode == '\b') {
+										if (count > 0) {
+											input[count - 1] = ' ';
+											count--;
+										}
+									}
+									else {
+										input[count] = static_cast<char>(event.text.unicode);
+										count++;
+									}
+								}
+							}
+						}
+						catch (...) {
+							invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						}
+						printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+					}
+				}
+				else {
+					Text invalid;
+					invalid.setFont(font);
+					invalid.setString("No courses registered!");
+					invalid.setCharacterSize(50);
+					invalid.setFillColor(Color::Red);
+					invalid.setStyle(Text::Bold);
+					FloatRect textRect = invalid.getLocalBounds();
+					invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
+					window.draw(invalid);
+				}
+			}
+			if (task5B == true) {
+				if (studentUser->getNumOfCourses() > 0) {
+					if (validCourse == true) {
+						coursePrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						try {
+							Sleep(100);
+							if (event.type == Event::TextEntered) {
+								if (event.text.unicode < 128) {
+									if (event.text.unicode == '\r') {
+										input[count] = '\0';
+
+										int size = strlen(input);
+										if (size != 7) {
+											throw size;
+										}
+										for (int i = 0; i < 7; i++) {
+											courseID[i] = input[i];
+										}
+										courseID[7] = '\0';
+										if (studentUser->courseAlreadyRegistered1(courseID) == false) {
+											throw false;
+										}
+
+										studentUser->viewAttendGraphics(window, font, courseID);
+										Sleep(5000);
+
+										isStudent = false;
+										done = true;
+										validCourse = false;
+
+										for (int i = 0; i < count; i++) {
+											input[i] = ' ';
+										}
+										count = 0;
+									}
+									else if (event.text.unicode == '\b') {
+										if (count > 0) {
+											input[count - 1] = ' ';
+											count--;
+										}
+									}
+									else {
+										input[count] = static_cast<char>(event.text.unicode);
+										count++;
+									}
+								}
+							}
+						}
+						catch (...) {
+							invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+						}
+						printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+					}
+				}
+				else {
+					Text invalid;
+					invalid.setFont(font);
+					invalid.setString("No courses registered!");
+					invalid.setCharacterSize(50);
+					invalid.setFillColor(Color::Red);
+					invalid.setStyle(Text::Bold);
+					FloatRect textRect = invalid.getLocalBounds();
+					invalid.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					invalid.setPosition(Vector2f(SCRWIDTH / 2.0f, 450));
+					window.draw(invalid);
+				}
+			}
+			if (task6B == true) {
+				if (validCourse == true) {
+					passwordPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									if ((size == 0) || (size > 10)) {
+										throw size;
+									}
+
+									for (int i = 0; i < size; i++) {
+										tempPass[i] = input[i];
+									}
+									tempPass[size] = '\0';
+
+									studentUser->newPassword(tempPass);
+
+									validCourse = false;
+									isTeacher = false;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+
+		}
+
+		if (isTA == true) {
+			if (taSelector == true) {
+				Text task1;
+				task1.setFont(font);
+				task1.setString("Login as TA");
+				task1.setCharacterSize(50);
+				task1.setFillColor(Color::Black);
+				task1.setStyle(Text::Bold);
+				FloatRect textRect = task1.getLocalBounds();
+				task1.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task1.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+				window.draw(task1);
+
+				Text task2;
+				task2.setFont(font);
+				task2.setString("Login as Student");
+				task2.setCharacterSize(50);
+				task2.setFillColor(Color::Black);
+				task2.setStyle(Text::Bold);
+				textRect = task2.getLocalBounds();
+				task2.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task2.setPosition(Vector2f(SCRWIDTH / 2.0f, 300));
+				window.draw(task2);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+					auto translated_pos = window.mapPixelToCoords(mouse_pos);
+					Sleep(500);
+					if (task1.getGlobalBounds().contains(translated_pos)) {
+						taSelector = false;
+						taskSelector = true;
+					}
+					if (task2.getGlobalBounds().contains(translated_pos)) {
+						taSelector = false;
+						isTA = false;
+						isStudent = true;
+						taskSelector = true;
+						studentUser = objectFinder(username, stList.getList(), tNumOfSt);
+					}
+				}
+			}
+		}
 
 		if (done == true) {
 			char doneText[] = { "Task Done!" };
@@ -2222,6 +2778,12 @@ int main()
 
         window.display();
     }
-
+	if (TAList != nullptr) {
+		for (int i = 0; i < tNumOfTA; i++) {
+			TAList[i]->deleteChar();
+		}
+		delete[]TAList;
+		TAList = nullptr;
+	}
     return 0;
 }

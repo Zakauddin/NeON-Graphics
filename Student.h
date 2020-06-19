@@ -28,7 +28,9 @@ public:
 	void newPassword(char* tempPass);
 	void printCourseIDs();
 	void viewAttend(char* courseID);
+	void viewAttendGraphics(RenderWindow& window, Font& font, char* courseID);
 	void viewMarks(char* courseID);
+	void viewMarksGraphics(RenderWindow& window, Font& font, char* courseID);
 	void withdraw(char* courseID);
 	~Student();
 };

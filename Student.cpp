@@ -341,6 +341,83 @@ void Student::viewAttend(char* courseID) {
 	}
 }
 
+void Student::viewAttendGraphics(RenderWindow& window, Font& font, char* courseID) {
+	Texture backgroundImg;
+	backgroundImg.loadFromFile("background.png");
+	Sprite background(backgroundImg);
+	background.scale((float)0.69, (float)0.69);
+	background.setPosition(0, 0);
+
+	window.clear();
+
+	
+
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(courses[i]->getCourseID(), courseID) == 0) {
+			int tempCount = courses[i]->getNumOfAttend();
+			window.draw(background);
+			Text uniName;
+			uniName.setFont(font);
+			uniName.setString(courses[i]->getCourseID());
+			uniName.setCharacterSize(100);
+			uniName.setFillColor(Color::Black);
+			uniName.setStyle(Text::Bold);
+			FloatRect textRect = uniName.getLocalBounds();
+			uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+			uniName.setPosition(Vector2f(1280 / 2.0f, 100));
+			window.draw(uniName);
+			if (tempCount != 0) {
+				int* temp = courses[i]->getAttend();
+				for (int j = 0; j < tempCount; j++) {
+					char day[] = { "Day  " };
+					char buffer[5];
+					_itoa_s(j + 1, buffer, 10);
+					day[4] =buffer[0];
+					uniName.setFont(font);
+					uniName.setString(day);
+					uniName.setCharacterSize(50);
+					uniName.setFillColor(Color::Black);
+					uniName.setStyle(Text::Bold);
+					FloatRect textRect = uniName.getLocalBounds();
+					uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					uniName.setPosition(320, 200 + (j * 75));
+					window.draw(uniName);
+					if (temp[j] == 0) {
+						Text uniName;
+						uniName.setFont(font);
+						uniName.setString("Absent");
+						uniName.setCharacterSize(50);
+						uniName.setFillColor(Color::Black);
+						uniName.setStyle(Text::Bold);
+						FloatRect textRect = uniName.getLocalBounds();
+						uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+						uniName.setPosition(Vector2f(1280 / 2.0f, 200 + (j * 75)));
+						window.draw(uniName);
+
+					}
+					else {
+						Text uniName;
+						uniName.setFont(font);
+						uniName.setString("Present");
+						uniName.setCharacterSize(50);
+						uniName.setFillColor(Color::Black);
+						uniName.setStyle(Text::Bold);
+						FloatRect textRect = uniName.getLocalBounds();
+						uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+						uniName.setPosition(Vector2f(1280 / 2.0f, 200 + (j * 75)));
+						window.draw(uniName);
+					}
+				}
+				temp = nullptr;
+			}
+			else {
+				cout << "No attendance recorded yet." << endl;
+			}
+		}
+	}
+	window.display();
+}
+
 void Student::viewMarks(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(courses[i]->getCourseID(), courseID) == 0) {
@@ -352,6 +429,71 @@ void Student::viewMarks(char* courseID) {
 			temp = nullptr;
 		}
 	}
+}
+
+void Student::viewMarksGraphics(RenderWindow& window, Font& font, char* courseID) {
+	Texture backgroundImg;
+	backgroundImg.loadFromFile("background.png");
+	Sprite background(backgroundImg);
+	background.scale((float)0.69, (float)0.69);
+	background.setPosition(0, 0);
+
+	window.clear();
+
+	
+
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(courses[i]->getCourseID(), courseID) == 0) {
+			window.draw(background);
+			Text uniName;
+			uniName.setFont(font);
+			uniName.setString(courses[i]->getCourseID());
+			uniName.setCharacterSize(100);
+			uniName.setFillColor(Color::Black);
+			uniName.setStyle(Text::Bold);
+			FloatRect textRect = uniName.getLocalBounds();
+			uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+			uniName.setPosition(Vector2f(1280 / 2.0f, 100));
+			window.draw(uniName);
+			int tempCount = courses[i]->getNumOfMarks();
+			if (tempCount != 0) {
+				int* temp = courses[i]->getMarks();
+				for (int j = 0; j < tempCount; j++) {
+					char day[] = { "Evaluation  " };
+					char buffer[5];
+					_itoa_s(j + 1, buffer, 10);
+					day[11] = buffer[0];
+					uniName.setFont(font);
+					uniName.setString(day);
+					uniName.setCharacterSize(50);
+					uniName.setFillColor(Color::Black);
+					uniName.setStyle(Text::Bold);
+					FloatRect textRect = uniName.getLocalBounds();
+					uniName.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					uniName.setPosition(320, 200 + (j * 75));
+					window.draw(uniName);
+
+					_itoa_s(temp[j], buffer, 10);
+
+					Text marksText;
+					marksText.setFont(font);
+					marksText.setString(buffer);
+					marksText.setCharacterSize(50);
+					marksText.setFillColor(Color::Black);
+					marksText.setStyle(Text::Bold);
+					textRect = marksText.getLocalBounds();
+					marksText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+					marksText.setPosition(Vector2f(1280 / 2.0f, 200 + (j * 75)));
+					window.draw(marksText);
+				}
+				temp = nullptr;
+			}
+			else {
+				cout << "No attendance recorded yet." << endl;
+			}
+		}
+	}
+	window.display();
 }
 
 void Student::withdraw(char* courseID) {
