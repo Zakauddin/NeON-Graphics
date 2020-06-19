@@ -78,6 +78,58 @@ void coursePrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIG
 	window.draw(courseText);
 }
 
+void passwordPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text courseText;
+	courseText.setFont(font);
+	courseText.setString("New Password");
+	courseText.setCharacterSize(80);
+	courseText.setFillColor(Color::Black);
+	courseText.setStyle(Text::Bold);
+	FloatRect textRect = courseText.getLocalBounds();
+	courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(courseText);
+}
+
+void firstPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text courseText;
+	courseText.setFont(font);
+	courseText.setString("First Name");
+	courseText.setCharacterSize(80);
+	courseText.setFillColor(Color::Black);
+	courseText.setStyle(Text::Bold);
+	FloatRect textRect = courseText.getLocalBounds();
+	courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(courseText);
+}
+
+void lastPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text courseText;
+	courseText.setFont(font);
+	courseText.setString("Last Name");
+	courseText.setCharacterSize(80);
+	courseText.setFillColor(Color::Black);
+	courseText.setStyle(Text::Bold);
+	FloatRect textRect = courseText.getLocalBounds();
+	courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(courseText);
+}
+
+void userPrintText(RenderWindow& window, Font& font, int SCRWIDTH, int SCRHEIGHT) {
+	Text courseText;
+	courseText.setFont(font);
+	courseText.setString("User ID");
+	courseText.setCharacterSize(80);
+	courseText.setFillColor(Color::Black);
+	courseText.setStyle(Text::Bold);
+	FloatRect textRect = courseText.getLocalBounds();
+	courseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	courseText.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+	window.draw(courseText);
+}
+
 int Person::numOfPeople = 0;
 
 template<class type>
@@ -303,8 +355,8 @@ int main()
 
 	int SCRWIDTH = 1280;
 	int SCRHEIGHT = 720;
-	
-    RenderWindow window(VideoMode(SCRWIDTH, SCRHEIGHT), "NeON");
+
+	RenderWindow window(VideoMode(SCRWIDTH, SCRHEIGHT), "NeON");
 
 	Font font;
 	font.loadFromFile("arial.ttf");
@@ -329,7 +381,8 @@ int main()
 	bool cPass = false;
 	bool isHOD = false;
 	bool isTeacher = false;
-	
+	bool isManager = false;
+
 	bool taskSelector = false;
 	bool task1B = false;
 	bool task2B = false;
@@ -352,8 +405,15 @@ int main()
 	char courseID[8];
 	char teachID[7];
 	char studentID[7];
+	char userID[7];
+	char firstName[20];
+	char lastName[20];
+
+	bool validFirst = false;
+	bool validLast = false;
 
 	Teacher* teacherUser = nullptr;
+	ItManager* itUser = nullptr;
 
 	uni.print();
 
@@ -495,7 +555,11 @@ int main()
 										isTeacher = true;
 									}
 								}
-
+								else if (username[0] == 'i') {
+									itUser = objectFinder(username, itList.getList(), tNumOfIT);
+									depID = uni.itDepGetter(itUser);
+									isManager = true;
+								}
 
 							}
 							else if (event.text.unicode == '\b') {
@@ -1500,7 +1564,57 @@ int main()
 									Sleep(5000);
 
 									validCourse = false;
-									attendOption = true;
+									isTeacher = false;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+			if (task6B == true) {
+				if (validCourse == true) {
+					passwordPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									if ((size == 0) || (size > 10)) {
+										throw size;
+									}
+									
+									for (int i = 0; i < size; i++) {
+										tempPass[i] = input[i];
+									}
+									tempPass[size] = '\0';
+
+									teacherUser->newPassword(tempPass);
+
+									validCourse = false;
+									isTeacher = false;
 									done = true;
 
 									for (int i = 0; i < count; i++) {
@@ -1528,6 +1642,577 @@ int main()
 				}
 			}
 		}
+
+		if (isManager == true) {
+			if (taskSelector == true) {
+				Text task1;
+				task1.setFont(font);
+				task1.setString("Create faculty account");
+				task1.setCharacterSize(50);
+				task1.setFillColor(Color::Black);
+				task1.setStyle(Text::Bold);
+				FloatRect textRect = task1.getLocalBounds();
+				task1.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task1.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+				window.draw(task1);
+
+				Text task2;
+				task2.setFont(font);
+				task2.setString("Delete faculty account");
+				task2.setCharacterSize(50);
+				task2.setFillColor(Color::Black);
+				task2.setStyle(Text::Bold);
+				textRect = task2.getLocalBounds();
+				task2.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task2.setPosition(Vector2f(SCRWIDTH / 2.0f, 300));
+				window.draw(task2);
+
+				Text task3;
+				task3.setFont(font);
+				task3.setString("Create student account");
+				task3.setCharacterSize(50);
+				task3.setFillColor(Color::Black);
+				task3.setStyle(Text::Bold);
+				textRect = task3.getLocalBounds();
+				task3.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task3.setPosition(Vector2f(SCRWIDTH / 2.0f, 400));
+				window.draw(task3);
+
+				Text task4;
+				task4.setFont(font);
+				task4.setString("Delete student account");
+				task4.setCharacterSize(50);
+				task4.setFillColor(Color::Black);
+				task4.setStyle(Text::Bold);
+				textRect = task4.getLocalBounds();
+				task4.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task4.setPosition(Vector2f(SCRWIDTH / 2.0f, 500));
+				window.draw(task4);
+
+				Text task5;
+				task5.setFont(font);
+				task5.setString("Reset password");
+				task5.setCharacterSize(50);
+				task5.setFillColor(Color::Black);
+				task5.setStyle(Text::Bold);
+				textRect = task5.getLocalBounds();
+				task5.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task5.setPosition(Vector2f(SCRWIDTH / 2.0f, 600));
+				window.draw(task5);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+					auto translated_pos = window.mapPixelToCoords(mouse_pos);
+					Sleep(500);
+					if (task1.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task1B = true;
+						validTeacherID = true;
+					}
+					if (task2.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task2B = true;
+						validTeacherID = true;
+					}
+					if (task3.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task3B = true;
+						validStudentID = true;
+					}
+					if (task4.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task4B = true;
+						validStudentID = true;
+					}
+					if (task5.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task5B = true;
+						validStudentID = true;
+					}
+				}
+			}
+
+			if (task1B == true) {					
+				if (validTeacherID == true) {
+					teacherPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									for (int i = 0; i < 6; i++) {
+										userID[i] = input[i];
+									}
+									userID[6] = '\0';
+									int size = strlen(userID);
+									if ((size < 6) || (size > 6)) {
+										throw size;
+									}
+									if (userID[0] != 't') {
+										throw userID[0];
+									}
+									for (int i = 0; i < tNumOfTeach; i++) {
+										if (strcmp(teachList.getList()[i]->getID(), userID) == 0) {
+											throw false;
+										}
+									}
+									validFirst = true;
+									validTeacherID = false;
+									
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+				if (validFirst == true) {
+					firstPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									for (int i = 0; i < size; i++) {
+										firstName[i] = input[i];
+									}
+									firstName[size] = '\0';
+									size = strlen(firstName);
+									if ((size > 20) || (size == 0)) {
+										throw size;
+									}
+									if ((firstName[0] > 96) && (firstName[0] < 123)) {
+										firstName[0] -= 32;
+									}
+									validFirst = false;
+									validLast = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+				if (validLast == true) {
+					lastPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									for (int i = 0; i < size; i++) {
+										lastName[i] = input[i];
+									}
+									lastName[size] = '\0';
+									size = strlen(lastName);
+									if ((size > 20) || (size == 0)) {
+										throw size;
+									}
+									if ((lastName[0] > 96) && (lastName[0] < 123)) {
+										lastName[0] -= 32;
+									}
+									validLast = false;
+									isManager = false;
+									done = true;
+
+									uni.newTeacher(depID, userID, firstName, lastName);
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+			if (task2B == true) {
+				if (validTeacherID == true) {
+					teacherPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									for (int i = 0; i < 6; i++) {
+										userID[i] = input[i];
+									}
+									userID[6] = '\0';
+									int size = strlen(userID);
+									if ((size < 6) || (size > 6)) {
+										throw size;
+									}
+									if (userID[0] != 't') {
+										throw userID[0];
+									}
+									if (uni.depChecker(depID, userID) == false) {
+										throw false;
+									}
+
+									uni.removeTeacher(depID, userID);
+									validTeacherID = false;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+			if (task3B == true) {
+				if (validStudentID == true) {
+					studentPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									for (int i = 0; i < 6; i++) {
+										userID[i] = input[i];
+									}
+									userID[6] = '\0';
+									int size = strlen(userID);
+									if ((size < 6) || (size > 6)) {
+										throw size;
+									}
+									if (userID[0] != 's') {
+										throw userID[0];
+									}
+									for (int i = 0; i < tNumOfSt; i++) {
+										if (strcmp(stList.getList()[i]->getID(), userID) == 0) {
+											throw false;
+										}
+									}
+									validFirst = true;
+									validStudentID = false;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+				if (validFirst == true) {
+					firstPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									for (int i = 0; i < size; i++) {
+										firstName[i] = input[i];
+									}
+									firstName[size] = '\0';
+									size = strlen(firstName);
+									if ((size > 20) || (size == 0)) {
+										throw size;
+									}
+									if ((firstName[0] > 96) && (firstName[0] < 123)) {
+										firstName[0] -= 32;
+									}
+									validFirst = false;
+									validLast = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+				if (validLast == true) {
+					lastPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									int size = strlen(input);
+									for (int i = 0; i < size; i++) {
+										lastName[i] = input[i];
+									}
+									lastName[size] = '\0';
+									size = strlen(lastName);
+									if ((size > 20) || (size == 0)) {
+										throw size;
+									}
+									if ((lastName[0] > 96) && (lastName[0] < 123)) {
+										lastName[0] -= 32;
+									}
+									validLast = false;
+									isManager = false;
+									done = true;
+
+									uni.newTeacher(depID, userID, firstName, lastName);
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+			if (task4B == true) {
+				if (validStudentID == true) {
+					studentPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									for (int i = 0; i < 6; i++) {
+										userID[i] = input[i];
+									}
+									userID[6] = '\0';
+									int size = strlen(userID);
+									if ((size < 6) || (size > 6)) {
+										throw size;
+									}
+									if (userID[0] != 's') {
+										throw userID[0];
+									}
+									if (uni.depChecker(depID, userID) == false) {
+										throw false;
+									}
+
+									uni.removeStudent(depID, userID);
+									validStudentID = false;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+			if (task5B == true) {
+				if (validStudentID == true) {
+					userPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					try {
+						Sleep(100);
+						if (event.type == Event::TextEntered) {
+							if (event.text.unicode < 128) {
+								if (event.text.unicode == '\r') {
+									input[count] = '\0';
+
+									for (int i = 0; i < 6; i++) {
+										userID[i] = input[i];
+									}
+									userID[6] = '\0';
+									bool exists;
+									int size = strlen(userID);
+									if (size != 6) {
+										throw size;
+									}
+									if (userID[0] == 't') {
+										exists = uni.depChecker(depID, userID);
+									}
+									else if (userID[0] == 's') {
+										exists = uni.depChecker(depID, userID);
+									}
+									else {
+										throw false;
+									}
+									if (exists == false) {
+										throw false;
+									}
+									if (userID[0] == 't') {
+										Teacher* temp = objectFinder(userID, teachList.getList(), tNumOfTeach);
+										temp->passwordReset();
+									}
+									else {
+										Student* temp = objectFinder(userID, stList.getList(), tNumOfSt);
+										temp->passwordReset();
+									}
+
+									validStudentID = false;
+									done = true;
+
+									for (int i = 0; i < count; i++) {
+										input[i] = ' ';
+									}
+									count = 0;
+								}
+								else if (event.text.unicode == '\b') {
+									if (count > 0) {
+										input[count - 1] = ' ';
+										count--;
+									}
+								}
+								else {
+									input[count] = static_cast<char>(event.text.unicode);
+									count++;
+								}
+							}
+						}
+					}
+					catch (...) {
+						invalidPrintText(window, font, SCRWIDTH, SCRHEIGHT);
+					}
+					printText(window, font, SCRWIDTH, SCRHEIGHT, input);
+				}
+			}
+		}
+
 
 		if (done == true) {
 			char doneText[] = { "Task Done!" };
