@@ -403,6 +403,8 @@ int main()
 	char input[20] = { ' ' };
 	char tempPass[20];
 	char* depID = nullptr;
+	char tempID[3];
+	char* taCourse = nullptr;
 
 	char username[7];
 	char courseID[8];
@@ -572,6 +574,11 @@ int main()
 										studentUser = objectFinder(username, stList.getList(), tNumOfSt);
 									}
 									else {
+										taCourse = taUser->getTACourse();
+										tempID[0] = taCourse[0];
+										tempID[1] = taCourse[1];
+										tempID[2] = '\0';
+
 										isTA = true;
 										taSelector = true;
 										taskSelector = false;
@@ -2767,6 +2774,56 @@ int main()
 						studentUser = objectFinder(username, stList.getList(), tNumOfSt);
 					}
 				}
+			}
+			if (taskSelector == true) {
+				Text task1;
+				task1.setFont(font);
+				task1.setString("Manage Evaluations");
+				task1.setCharacterSize(50);
+				task1.setFillColor(Color::Black);
+				task1.setStyle(Text::Bold);
+				FloatRect textRect = task1.getLocalBounds();
+				task1.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task1.setPosition(Vector2f(SCRWIDTH / 2.0f, 200));
+				window.draw(task1);
+
+				Text task2;
+				task2.setFont(font);
+				task2.setString("View Evaluations");
+				task2.setCharacterSize(50);
+				task2.setFillColor(Color::Black);
+				task2.setStyle(Text::Bold);
+				textRect = task2.getLocalBounds();
+				task2.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+				task2.setPosition(Vector2f(SCRWIDTH / 2.0f, 300));
+				window.draw(task2);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					auto mouse_pos = sf::Mouse::getPosition(window); // Mouse position relative to the window
+					auto translated_pos = window.mapPixelToCoords(mouse_pos);
+					Sleep(500);
+					if (task1.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task1B = true;
+						validCourse = true;
+					}
+					if (task2.getGlobalBounds().contains(translated_pos)) {
+						taskSelector = false;
+						task2B = true;
+						validCourse = true;
+					}
+				}
+			}
+			if (task1B == true) {
+				uni.newMarksGraphics(window, font, event, tempID, taCourse);
+				isTA = false;
+				done = true;
+			}
+			if (task2B == true) {
+				uni.viewMarksGraphics(window, font, tempID, courseID);
+				isTA = false;
+				done = true;
+				Sleep(5000);
 			}
 		}
 

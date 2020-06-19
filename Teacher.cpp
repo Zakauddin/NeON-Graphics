@@ -282,7 +282,7 @@ void Teacher::newMarks(char* courseID) {
 void Teacher::newMarksGraphic(RenderWindow& window, Font& font, Event& event, char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(coursesList[i]->getSection(), courseID) == 0) {
-			coursesList[i]->newMarksGraphic(window, font, event);
+			coursesList[i]->newMarksGraphics(window, font, event);
 		}
 	}
 }

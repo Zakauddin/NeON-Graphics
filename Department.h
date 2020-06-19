@@ -52,8 +52,10 @@ public:
 	void printGradeGraphic(RenderWindow& window, Font& font, char* courseID);
 	int getStudentCount(char* courseID);
 	void newMarks(char* courseID);
+	void newMarksGraphics(RenderWindow& window, Font& font, Event& event, char* courseID);
 	void appendMarks(char* courseID);
 	void viewMarks(char* courseID);
+	void viewMarksGraphics(RenderWindow& window, Font& font, char* courseID);
 	void appointTA(char* courseID, TA* obj);
 	~Department();
 };

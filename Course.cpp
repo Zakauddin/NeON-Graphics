@@ -240,7 +240,7 @@ void Course::newMarks() {
 	}
 }
 
-void Course::newMarksGraphic(RenderWindow& window, Font& font, Event& event ) {
+void Course::newMarksGraphics(RenderWindow& window, Font& font, Event& event ) {
 	for (int i = 0; i < numOfStudents; i++) {
 		char* tempGrade = studentList[i]->getGrade();
 		if (tempGrade[0] != 'W') {

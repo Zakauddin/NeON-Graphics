@@ -32,7 +32,7 @@ public:
 	void printAttendance();
 	void viewAttendGraphic(RenderWindow& window, Font& font);
 	void newMarks();
-	void newMarksGraphic(RenderWindow& window, Font& font, Event& event);
+	void newMarksGraphics(RenderWindow& window, Font& font, Event& event);
 	void appendMarks();
 	void printMarks();
 	void viewMarksGraphic(RenderWindow& window, Font& font);

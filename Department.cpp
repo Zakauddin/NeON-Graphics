@@ -474,6 +474,14 @@ void Department::newMarks(char* courseID) {
 	}
 }
 
+void Department::newMarksGraphics(RenderWindow& window, Font& font, Event& event, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
+			courseList[i]->newMarksGraphics(window, font, event);
+		}
+	}
+}
+
 void Department::appendMarks(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
@@ -486,6 +494,14 @@ void Department::viewMarks(char* courseID) {
 	for (int i = 0; i < numOfCourses; i++) {
 		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
 			courseList[i]->printMarks();
+		}
+	}
+}
+
+void Department::viewMarksGraphics(RenderWindow& window, Font& font, char* courseID) {
+	for (int i = 0; i < numOfCourses; i++) {
+		if (strcmp(courseList[i]->getSection(), courseID) == 0) {
+			courseList[i]->printGradeGraphic(window, font);
 		}
 	}
 }

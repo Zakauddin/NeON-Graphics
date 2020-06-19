@@ -644,6 +644,22 @@ void University::newMarks(char* depID, char* courseID) {
 	}
 }
 
+void University::newMarksGraphics(RenderWindow& window, Font& font, Event& event, char* depID, char* courseID) {
+	for (int i = 0; i < totalDep; i++) {
+		char* temp = depList[i]->getID();
+		bool found = true;
+		for (int i = 0; i < 2; i++) {
+			if (depID[i] != temp[i]) {
+				found = false;
+			}
+		}
+		if (found == true) {
+			depList[i]->newMarksGraphics(window, font, event, courseID);
+		}
+		temp = nullptr;
+	}
+}
+
 void University::appendMarks(char* depID, char* courseID) {
 	for (int i = 0; i < totalDep; i++) {
 		char* temp = depList[i]->getID();
@@ -671,6 +687,22 @@ void University::viewMarks(char* depID, char* courseID) {
 		}
 		if (found == true) {
 			depList[i]->viewMarks(courseID);
+		}
+		temp = nullptr;
+	}
+}
+
+void University::viewMarksGraphics(RenderWindow& window, Font& font, char* depID, char* courseID) {
+	for (int i = 0; i < totalDep; i++) {
+		char* temp = depList[i]->getID();
+		bool found = true;
+		for (int i = 0; i < 2; i++) {
+			if (depID[i] != temp[i]) {
+				found = false;
+			}
+		}
+		if (found == true) {
+			depList[i]->viewMarksGraphics(window, font, courseID);
 		}
 		temp = nullptr;
 	}
