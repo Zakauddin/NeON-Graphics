@@ -1,0 +1,49 @@
+Every type of member has thier own info file. Such as teacherInfo.
+
+
+student/TA ID starts with 's'
+teacher/HOD ID starts with 't'
+it manager ID starts with 'i'
+
+
+
+Course format: XX100-Y
+XX is the department code.
+3 digits are the course ID.
+Y is the section number.
+
+
+
+Student file Format (line by line):
+pass
+name
+number of courses
+block of one course {course ID
+number of attendance
+actual attendance
+number of evaluations
+actual evaluations
+grade (W if course withdrawn)}
+
+Teacher's file Format (line by line):
+pass
+name
+number of courses
+{each line onwards contains the course ID}
+
+Department File Format (line by line):
+Department Name
+Number of courses
+{Each line for course ID}
+Number of Teachers
+First line for HOD ID
+{Each line for teacher IDs}
+It Manager ID
+Number of students
+{Each line for student IDs}
+
+Course File Format (line by line):
+Course Name
+TA ID
+Number of students
+{Each Line for Student IDs}
