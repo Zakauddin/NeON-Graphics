@@ -15,5 +15,5 @@ public:
 	char* getTACourse();
 	char* getID();
 	void deleteChar();
-	//~TA();
+	~TA();
 };

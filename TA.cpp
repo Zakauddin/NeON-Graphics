@@ -35,9 +35,9 @@ void TA::deleteChar() {
 	courseID = nullptr;
 }
 
-//TA::~TA() {
-//	if (courseID != nullptr) {
-//		delete[]courseID;
-//	}
-//	courseID = nullptr;
-//}
+TA::~TA() {
+	if (courseID != nullptr) {
+		delete[]courseID;
+	}
+	courseID = nullptr;
+}

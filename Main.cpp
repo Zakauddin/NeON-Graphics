@@ -2834,12 +2834,12 @@ int main()
 
         window.display();
     }
-	if (TAList != nullptr) {
+	/*if (TAList != nullptr) {
 		for (int i = 0; i < tNumOfTA; i++) {
 			TAList[i]->deleteChar();
 		}
 		delete[]TAList;
 		TAList = nullptr;
-	}
+	}*/
     return 0;
 }
